@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Planner — Demo</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff7fb;color:#29242a}
+:root{--p:#b52d67;--lp:#fbe9f2;--line:#efdce6;--muted:#80757e}
+.app{display:flex;min-height:100vh}.side{width:235px;background:#fff;border-right:1px solid var(--line);padding:24px 14px;position:fixed;inset:0 auto 0 0}
+.logo{text-align:center;font-weight:900;font-size:25px;letter-spacing:2px;color:var(--p);margin:5px 0 7px}.demo{text-align:center;font-size:10px;letter-spacing:1.5px;color:var(--p);margin-bottom:25px}
+.nav button{width:100%;border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:12px;margin:2px 0;color:#665d65;font-size:14px;cursor:pointer}.nav button:hover,.nav button.active{background:var(--lp);color:var(--p);font-weight:700}.nav .lock{float:right}
+.main{margin-left:235px;padding:30px;width:calc(100% - 235px);max-width:1150px}.top{display:flex;justify-content:space-between;align-items:center}.badge{background:var(--lp);color:var(--p);padding:8px 13px;border-radius:20px;font-size:12px;font-weight:700}
+h1{font-size:31px;margin:24px 0 6px}.sub{color:var(--muted);margin:0 0 24px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:19px;box-shadow:0 8px 25px #8b356016}.wide{grid-column:span 2}.card h3{margin:0 0 14px;font-size:15px}.num{font-size:28px;font-weight:800;color:var(--p)}.muted{font-size:12px;color:var(--muted)}
+.task{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #f3e9ee}.task:last-child{border:0}.task input{accent-color:var(--p)}.task.done span{text-decoration:line-through;color:#aaa}
+.subject{margin-left:auto;background:#fff0f6;color:var(--p);font-size:10px;padding:5px 7px;border-radius:15px}
+.progress{height:8px;background:#eee;border-radius:8px;margin-top:12px;overflow:hidden}.progress i{display:block;height:100%;width:58%;background:var(--p)}
+.timer{text-align:center}.clock{font-size:42px;font-weight:800;color:var(--p);margin:12px}.btn{border:0;border-radius:11px;padding:10px 16px;background:var(--p);color:#fff;font-weight:700;cursor:pointer}.btn.light{background:var(--lp);color:var(--p)}
+.features{margin-top:18px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.feature{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px;text-align:center;cursor:pointer}.feature:hover{background:var(--lp)}.feature .ico{font-size:25px}.feature b{display:block;margin-top:9px;font-size:13px}.feature small{color:#999}
+.note{margin-top:20px;padding:16px;border-radius:15px;background:var(--lp);color:#684957;font-size:13px;text-align:center}
+.modal{display:none;position:fixed;inset:0;background:#0007;align-items:center;justify-content:center;padding:20px;z-index:5}.modal.show{display:flex}.box{background:#fff;border-radius:22px;padding:28px;max-width:390px;width:100%;text-align:center;box-shadow:0 20px 60px #0003}.box .big{font-size:38px}.box h2{margin:10px 0}.box p{color:var(--muted);font-size:14px;line-height:1.5}.close{margin-top:8px}
+@media(max-width:800px){.side{width:70px;padding:18px 7px}.logo{font-size:0}.logo:after{content:"MP";font-size:20px}.demo{display:none}.nav button{font-size:0;text-align:center}.nav button .lock{display:none}.main{margin-left:70px;width:calc(100% - 70px);padding:18px}.cards{grid-template-columns:1fr}.wide{grid-column:auto}.features{grid-template-columns:repeat(2,1fr)}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">MY PLANNER</div><div class="demo">FREE DEMO</div>
+  <div class="nav">
+    <button class="active" onclick="show('Home',this)">🏠 Home</button>
+    <button onclick="show('Subjects',this)">📚 Subjects <span class="lock">🔒</span></button>
+    <button onclick="show('Tasks',this)">✅ Tasks</button>
+    <button onclick="show('Schedule',this)">📅 Schedule <span class="lock">🔒</span></button>
+    <button onclick="show('Timer',this)">⏱️ Timer</button>
+    <button onclick="show('Game',this)">🎮 Game <span class="lock">🔒</span></button>
+    <button onclick="show('Rewards',this)">🎁 Rewards <span class="lock">🔒</span></button>
+    <button onclick="show('Badges',this)">🏆 Badges <span class="lock">🔒</span></button>
+    <button onclick="show('Stats',this)">📊 Stats <span class="lock">🔒</span></button>
+    <button onclick="show('Goals',this)">🎯 Goals <span class="lock">🔒</span></button>
+  </div>
+</aside>
+
+<main class="main">
+ <div class="top"><div><span class="badge">✨ DEMO VERSION</span></div><div class="muted">Preview only</div></div>
+ <h1>Good morning! 👋</h1><p class="sub">Welcome to your little My Planner preview.</p>
+
+ <div class="cards">
+  <div class="card"><h3>⭐ XP</h3><div class="num" id="xp">120</div><div class="muted">Demo XP</div></div>
+  <div class="card"><h3>🔥 Streak</h3><div class="num">3</div><div class="muted">days</div></div>
+  <div class="card"><h3>🎯 Daily Progress</h3><div class="num">58%</div><div class="progress"><i></i></div></div>
+
+  <div class="card wide"><h3>📋 Today's Tasks</h3>
+   <div class="task"><input type="checkbox" checked onchange="task(this)"><span>Review Accounting</span><span class="subject">Accounting</span></div>
+   <div class="task"><input type="checkbox" onchange="task(this)"><span>Practice English</span><span class="subject">English</span></div>
+   <div class="task"><input type="checkbox" onchange="task(this)"><span>Complete homework</span><span class="subject">General</span></div>
+  </div>
+
+  <div class="card timer"><h3>⏱️ Pomodoro</h3><div class="clock" id="clock">25:00</div><button class="btn" onclick="start()">▶ Start</button> <button class="btn light" onclick="reset()">↻</button></div>
+ </div>
+
+ <div class="features">
+  <div class="feature" onclick="locked('Subjects')"><div class="ico">📚</div><b>Subjects</b><small>🔒 Demo</small></div>
+  <div class="feature" onclick="locked('Schedule')"><div class="ico">📅</div><b>Schedule</b><small>🔒 Demo</small></div>
+  <div class="feature" onclick="locked('Statistics')"><div class="ico">📊</div><b>Statistics</b><small>🔒 Demo</small></div>
+  <div class="feature" onclick="locked('Rewards')"><div class="ico">🎁</div><b>Rewards</b><small>🔒 Demo</small></div>
+  <div class="feature" onclick="locked('Badges')"><div class="ico">🏆</div><b>Badges</b><small>🔒 Demo</small></div>
+ </div>
+
+ <div class="note">🔐 Some sections are locked in the Free Demo. Unlock the full My Planner to access everything.</div>
+</main>
+</div>
+
+<div class="modal" id="modal"><div class="box"><div class="big">🔒</div><h2 id="mtitle">Feature locked</h2><p>This section is available in the <b>Full Version</b> of My Planner.<br>You're currently viewing the free demo.</p><button class="btn" onclick="closeModal()">Get Full Version</button><br><button class="btn light close" onclick="closeModal()">Continue Demo</button></div></div>
+
+<script>
+let xp=120,sec=1500,int=null;
+function task(x){let n=[...document.querySelectorAll('.task input')].filter(a=>a.checked).length;document.getElementById('xp').textContent=120+(n-1)*10;x.parentElement.classList.toggle('done',x.checked)}
+function render(){document.getElementById('clock').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')}
+function start(){if(int)return;int=setInterval(()=>{if(sec){sec--;render()}else{clearInterval(int);int=null;alert('Pomodoro complete! +25 XP ✨')}},1000)}
+function reset(){clearInterval(int);int=null;sec=1500;render()}
+function locked(name){document.getElementById('mtitle').textContent=name+' is locked';document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+function show(name,el){if(name!=='Home'&&name!=='Tasks'&&name!=='Timer'){locked(name);return}document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));el.classList.add('active');if(name!=='Home')locked(name)}
+</script>
+</body>
+</html>
